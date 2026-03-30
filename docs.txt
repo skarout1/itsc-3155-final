@@ -1,0 +1,3 @@
+Attendance: https://docs.google.com/spreadsheets/d/1wwlppMzaPTXMsD-XaEGFrUInL204HWGQxGxTj1v0BjI/edit?usp=sharing
+User Story: https://docs.google.com/spreadsheets/d/1M3JJ9YgUPlE2l4rDZ3Ace1wX4G9Q-Y5u/edit?usp=sharing&ouid=108374027677493358518&rtpof=true&sd=true
+Product Backlog: https://docs.google.com/spreadsheets/d/1rHDKImkXJoXU3PadPJ4Lh9sdstGyxyYA/edit?usp=sharing&ouid=108374027677493358518&rtpof=true&sd=true
