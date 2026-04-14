@@ -9,7 +9,7 @@ class Order(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    created_at = Column(DATETIME, default=datetime.now())
+    created_at = Column(DATETIME, default=datetime.now)
 
     user = relationship("User", back_populates="orders")
     order_details = relationship("OrderDetail", back_populates="order")

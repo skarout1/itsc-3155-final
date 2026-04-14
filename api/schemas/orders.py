@@ -4,10 +4,8 @@ from pydantic import BaseModel
 from .order_details import OrderDetail
 
 
-
 class OrderBase(BaseModel):
-    customer_name: str
-    description: Optional[str] = None
+    user_id: int
 
 
 class OrderCreate(OrderBase):
@@ -15,14 +13,13 @@ class OrderCreate(OrderBase):
 
 
 class OrderUpdate(BaseModel):
-    customer_name: Optional[str] = None
-    description: Optional[str] = None
+    user_id: Optional[int] = None
 
 
 class Order(OrderBase):
     id: int
-    order_date: Optional[datetime] = None
+    created_at: Optional[datetime] = None
     order_details: list[OrderDetail] = None
 
-    class ConfigDict:
+    class Config:
         from_attributes = True
