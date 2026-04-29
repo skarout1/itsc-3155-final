@@ -20,6 +20,8 @@ class RecipeUpdate(BaseModel):
 
 class Recipe(RecipeBase):
     id: int
+    sandwich_id: int
+    resource_id: int
     sandwich: Sandwich = None
     resource: Resource = None
 
