@@ -1,22 +1,15 @@
-import uuid
-from datetime import datetime
 from sqlalchemy.orm import Session
-from fastapi import HTTPException, status, Response, Depends
+from fastapi import HTTPException, status, Response
 from ..models import reviews as model
 from sqlalchemy.exc import SQLAlchemyError
 
 
 def create(db: Session, request):
     new_item = model.Review(
-        customer_name=request.customer_name,
-        customer_phone=request.customer_phone,
-        customer_address=request.customer_address,
         user_id=request.user_id,
-        order_type=request.order_type,
-        deal_id=request.deal_id,
-        total_price=request.total_price,
-        tracking_number=str(uuid.uuid4()),
-        order_status='pending',
+        product_id=request.product_id,
+        score=request.score,
+        review_text=request.review_text,
     )
 
     try:
@@ -75,21 +68,3 @@ def delete(db: Session, item_id):
         error = str(e.__dict__['orig'])
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
-
-
-def read_by_tracking(db: Session, tracking_number: str):
-    item = db.query(model.Review).filter(model.Review.tracking_number == tracking_number).first()
-    if not item:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Review not found!")
-    return item
-
-
-def read_by_date_range(db: Session, start_date: datetime, end_date: datetime):
-    try:
-        result = db.query(model.Review).filter(
-            model.Review.created_at >= start_date,
-            model.Review.created_at <= end_date
-        ).all()
-    except SQLAlchemyError as e:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e.__dict__['orig']))
-    return result

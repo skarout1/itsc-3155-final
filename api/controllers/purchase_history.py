@@ -1,13 +1,11 @@
-import uuid
-from datetime import datetime
 from sqlalchemy.orm import Session
-from fastapi import HTTPException, status, Response, Depends
-from ..models import orders as model
+from fastapi import HTTPException, status, Response
+from ..models import purchase_history as model
 from sqlalchemy.exc import SQLAlchemyError
 
 
 def create(db: Session, request):
-    new_item = model.History(
+    new_item = model.PurchaseHistory(
         user_id=request.user_id,
         order_id=request.order_id,
         product_id=request.product_id,
@@ -15,7 +13,6 @@ def create(db: Session, request):
         quantity=request.quantity,
         unit_price=request.unit_price,
         total_price=request.total_price,
-        purchased_at=request.purchased_at
     )
 
     try:
@@ -31,7 +28,7 @@ def create(db: Session, request):
 
 def read_all(db: Session):
     try:
-        result = db.query(model.Order).all()
+        result = db.query(model.PurchaseHistory).all()
     except SQLAlchemyError as e:
         error = str(e.__dict__['orig'])
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
@@ -40,7 +37,7 @@ def read_all(db: Session):
 
 def read_one(db: Session, item_id):
     try:
-        item = db.query(model.History).filter(model.History.id == item_id).first()
+        item = db.query(model.PurchaseHistory).filter(model.PurchaseHistory.id == item_id).first()
         if not item:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
     except SQLAlchemyError as e:
@@ -51,7 +48,7 @@ def read_one(db: Session, item_id):
 
 def update(db: Session, item_id, request):
     try:
-        item = db.query(model.History).filter(model.History.id == item_id)
+        item = db.query(model.PurchaseHistory).filter(model.PurchaseHistory.id == item_id)
         if not item.first():
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
         update_data = request.dict(exclude_unset=True)
@@ -65,7 +62,7 @@ def update(db: Session, item_id, request):
 
 def delete(db: Session, item_id):
     try:
-        item = db.query(model.History).filter(model.History.id == item_id)
+        item = db.query(model.PurchaseHistory).filter(model.PurchaseHistory.id == item_id)
         if not item.first():
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
         item.delete(synchronize_session=False)
